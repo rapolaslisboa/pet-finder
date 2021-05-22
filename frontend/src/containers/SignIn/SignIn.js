@@ -4,17 +4,37 @@ import FormControlLabel from "@material-ui/core/FormControlLabel";
 import TextField from "@material-ui/core/TextField";
 import React from "react";
 import { useModalContext } from "../../contexts/ModalContext";
+import { useAuthContext } from "../../contexts/AuthContext";
 import classes from "./SignIn.module.css";
+import { useForm } from "react-hook-form";
+import axios from "axios";
 
 const SignIn = () => {
-  const { handleModalContent } = useModalContext();
+  const { handleModalContent, closeModal } = useModalContext();
+  const { setIsAuthenticated, setUserCity } = useAuthContext();
+  const { register, handleSubmit } = useForm();
+
+  const onSubmit = (data) => {
+    axios
+      .post("http://127.0.0.1:5000/api/signin", data)
+      .then((response) => {
+        console.log(response.data);
+        if ("error" in response.data) {
+          alert(response.data.error);
+        } else {
+          closeModal();
+          alert("Login realizado com sucesso!");
+          setUserCity(response.data.city);
+          setIsAuthenticated(true);
+        }
+      })
+      .catch((error) => alert(error));
+  };
+
   return (
     <div className={classes.SignIn}>
-      {/* <div className={classes.Logo}>
-        <img src={LogoImg} alt="Vitrine Acadêmica" id="Logo" />
-      </div> */}
       <h1>Faça seu login</h1>
-      <form className={classes.Form} noValidate>
+      <form className={classes.Form} onSubmit={handleSubmit(onSubmit)}>
         <TextField
           variant="outlined"
           margin="normal"
@@ -22,7 +42,8 @@ const SignIn = () => {
           fullWidth
           id="email"
           label="E-mail"
-          name="email"
+          {...register("E-mail")}
+          name="E-mail"
           autoComplete="email"
           autoFocus
         />
@@ -31,8 +52,9 @@ const SignIn = () => {
           margin="normal"
           required
           fullWidth
-          name="password"
+          name="Password"
           label="Senha"
+          {...register("Password")}
           type="password"
           id="password"
           autoComplete="current-password"

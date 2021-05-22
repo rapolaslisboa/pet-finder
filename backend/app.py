@@ -5,7 +5,8 @@ import json
 from bson import json_util
 from flask import Flask, request
 from flask_cors import CORS
-from flask_jwt_extended import (JWTManager, create_access_token, create_refresh_token)
+from flask_jwt_extended import (
+    JWTManager, create_access_token, create_refresh_token)
 from pymongo import MongoClient
 
 app = Flask(__name__)
@@ -22,12 +23,13 @@ db = client.petfinder
 app.config['JWT_SECRET_KEY'] = 'F0662B2FC6209B419EA422056809F42D2A38CCFAD0105DF4382E22A65BFC73E8'
 jwt = JWTManager(app)
 
+
+
 # Login
-@app.route('/api/signin', methods=['GET', 'POST'])
+@app.route('/api/signin', methods=['POST'])
 def signin():
     try:
         data = request.get_json()
-        print("\nDados do usuário no login: ", data)
         current_user = db.user.find_one({"E-mail": data["E-mail"]})
 
         if not current_user:
@@ -35,7 +37,7 @@ def signin():
 
         password = hashlib.md5(data['Password'].encode()).hexdigest()
 
-        if current_user['Password'] == password:           
+        if current_user['Password'] == password:
             expires = datetime.timedelta(minutes=30)
             access_token = create_access_token(
                 identity=data['E-mail'], expires_delta=expires)
@@ -43,11 +45,12 @@ def signin():
 
             return {
                 'e-mail': current_user["E-mail"],
+                'city': current_user["Address"].split(", ")[2],
                 'accessToken': access_token,
                 'refreshToken': refresh_token
             }
 
-        else:          
+        else:
             return {'error': 'Credenciais erradas. Nome de usuário e/ou senha inválido (os).'}
 
     except:
@@ -55,17 +58,24 @@ def signin():
 
 
 # Cadastro
-@app.route('/api/signup', methods=['GET', 'POST'])
+@app.route('/api/signup', methods=['POST'])
 def signup():
     try:
         data = request.get_json()
-        print("\nDados do usuário no cadastro: ", data)
         email_not_used = db.user.find_one({"E-mail": data["E-mail"]})
 
-        if not email_not_used:
+        if email_not_used != None:
             return {"error": "Esse e-mail já foi utilizado."}
 
+        data["Password"] = hashlib.md5(data['Password'].encode()).hexdigest()
+        data["Address"] = data["Street"] + ", " + data["Number"] + ", " + data["City"] + ", " + data["State"]
+        del data["Street"]
+        del data["Number"]
+        del data["City"]
+        del data["State"]
+
         db.user.insert_one(data)
+        client.close()
 
         return {"success": "Usuário cadastrado com sucesso!"}
 
@@ -80,7 +90,7 @@ def list_pets(city=None):
     if city == None:
         filtered_pets = db.pets.find({})
         return json.dumps(filtered_pets, default=json_util.default)
-    else:    
+    else:
         filtered_pets = db.pets.find({"City": city})
         if db.pets.find({"City": city}).count() > 0:
             return json.dumps(filtered_pets, default=json_util.default)
@@ -89,4 +99,3 @@ def list_pets(city=None):
 
 if __name__ == "__main__":
     app.run()
-

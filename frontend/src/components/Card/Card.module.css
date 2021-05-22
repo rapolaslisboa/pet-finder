@@ -1,32 +1,4 @@
-.Home {
-  display: flex;
-  justify-content: center;
-  flex-direction: column;
-}
-
-.Home font {
-  font-size: 2em;
-  font-weight: 600;
-  text-align: center;
-  color: #3d3c3b;
-  margin-top: 3em;
-}
-
-/* .Home ul {
-  padding: 20px;
-  list-style-type: none;
-} */
-
-.PetList {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-  gap: 60px;
-  margin-top: 4em;
-}
-
-/* .PetCard {
+.PetCard {
   max-width: 280px;
   width: 280px;
   max-height: 458.7px;
@@ -39,6 +11,11 @@
   height: 187.5px;
   border-radius: 3px;
   margin-bottom: 0.8em;
+}
+
+.PetCard ul {
+  padding: 20px;
+  list-style-type: none;
 }
 
 .AdoptButton {
@@ -60,10 +37,4 @@
 .AdoptButton:active,
 .AdoptButton.active {
   background-color: #279deb;
-} */
-
-@media (min-width: 500px) {
-  .PetList {
-    flex-direction: row;
-  }
 }

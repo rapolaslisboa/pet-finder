@@ -1,12 +1,18 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import { BrowserRouter } from "react-router-dom";
+import { ModalProvider } from "./contexts/ModalContext";
+import { AuthProvider } from "./contexts/AuthContext";
 import App from "./App";
 import "./index.css";
 
 ReactDOM.render(
   <BrowserRouter>
-    <App />
+    <AuthProvider>
+      <ModalProvider>
+        <App />
+      </ModalProvider>
+    </AuthProvider>
   </BrowserRouter>,
   document.getElementById("root")
 );

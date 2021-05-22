@@ -1,0 +1,13 @@
+.Management {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.Management font {
+  font-size: 2em;
+  font-weight: 600;
+  text-align: center;
+  color: #3d3c3b;
+  margin-top: 3em;
+}

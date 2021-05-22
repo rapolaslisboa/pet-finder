@@ -2,41 +2,47 @@ import Button from "@material-ui/core/Button";
 import Grid from "@material-ui/core/Grid";
 import TextField from "@material-ui/core/TextField";
 import React from "react";
-// import InputMask from "react-input-mask";
 import { useModalContext } from "../../contexts/ModalContext";
 import classes from "./SignUp.module.css";
+import { useForm } from "react-hook-form";
+import axios from "axios";
 
 const SignUp = () => {
-  const { handleModalContent } = useModalContext();
+  const { handleModalContent, closeModal } = useModalContext();
+  const { register, handleSubmit, reset } = useForm();
+  
+  const onSubmit = (data) => {
+    console.log(data);
+    axios
+      .post("http://127.0.0.1:5000/api/signup", data)
+      .then((response) => {
+        if ("success" in response.data) {
+          closeModal();
+          reset();
+          alert(response.data.success);
+        } else {
+          alert(response.data.error);
+        }
+      })
+      .catch((error) => alert(error));
+  };
+
   return (
     <div className={classes.SignUp}>
-      {/* <div className={classes.Logo}>
-        <img src={LogoImg} alt="Vitrine Acadêmica" id="Logo" />
-      </div> */}
       <h1>Realize seu cadastro</h1>
-      <form className={classes.Form} noValidate>
+      <form className={classes.Form} onSubmit={handleSubmit(onSubmit)}>
         <Grid container spacing={2}>
-          <Grid item xs={12} sm={6}>
+          <Grid item xs={12}>
             <TextField
               autoComplete="fname"
-              name="Nome"
+              name="Name"
               variant="outlined"
               required
               fullWidth
-              id="nome"
+              {...register("Name")}
+              id="name"
               label="Nome"
               autoFocus
-            />
-          </Grid>
-          <Grid item xs={12} sm={6}>
-            <TextField
-              variant="outlined"
-              required
-              fullWidth
-              id="sobrenome"
-              label="Sobrenome"
-              name="Sobrenome"
-              autoComplete="lname"
             />
           </Grid>
           <Grid item xs={12}>
@@ -45,8 +51,9 @@ const SignUp = () => {
               required
               fullWidth
               id="email"
+              {...register("E-mail")}
               label="E-mail"
-              name="Email"
+              name="E-mail"
               autoComplete="email"
             />
           </Grid>
@@ -55,63 +62,60 @@ const SignUp = () => {
               variant="outlined"
               required
               fullWidth
-              name="Senha"
+              name="Password"
               label="Senha"
               type="password"
+              {...register("Password")}
               id="password"
               autoComplete="current-password"
             />
           </Grid>
-          {/* <Grid item xs={12}>
+          <Grid item xs={12} sm={6}>
             <TextField
               variant="outlined"
               required
               fullWidth
-              name="ConfirmPassword"
-              label="Confirme sua senha"
-              type="password"
-              id="confirmPassword"
-              autoComplete="current-password"
+              id="street"
+              {...register("Street")}
+              label="Rua"
+              name="Street"
             />
-          </Grid> */}
-          {/* <Grid item xs={12}>
-            <InputMask
-              mask="999.999.999-99"
-              // value={this.state.phone}
-              disabled={false}
-              // maskChar=" "
-              maskPlaceholder=""
-            >
-              <TextField
-                variant="outlined"
-                required
-                fullWidth
-                name="CPF"
-                label="CPF"
-                id="CPF"
-              />
-            </InputMask>
-          </Grid> */}
-          {/* <Grid item xs={12}>
-            <InputMask
-              mask="99 99999-9999"
-              // value={this.state.phone}
-              disabled={false}
-              // maskChar=" "
-              maskPlaceholder=""
-            >
-              <TextField
-                variant="outlined"
-                required
-                fullWidth
-                name="Celular"
-                label="Celular"
-                type="tel"
-                id="phone"
-                autoComplete="tel"
-              />
-            </InputMask>
-          </Grid> */}
+          </Grid>
+          <Grid item xs={12} sm={6}>
+            <TextField
+              variant="outlined"
+              required
+              fullWidth
+              InputProps={{ inputProps: { min: 0 } }}
+              type="number"
+              {...register("Number")}
+              id="number"
+              label="Número"
+              name="Number"
+            />
+          </Grid>
+          <Grid item xs={12} sm={6}>
+            <TextField
+              variant="outlined"
+              required
+              fullWidth
+              id="city"
+              {...register("City")}
+              label="Cidade"
+              name="City"
+            />
+          </Grid>
+          <Grid item xs={12} sm={6}>
+            <TextField
+              variant="outlined"
+              required
+              fullWidth
+              {...register("State")}
+              id="state"
+              label="Estado"
+              name="State"
+            />
+          </Grid>
         </Grid>
         <span className={classes.Terms}>
           Ao criar uma conta, você concorda com a Política de Privacidade e os

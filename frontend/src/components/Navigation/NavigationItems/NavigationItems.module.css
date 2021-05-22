@@ -81,7 +81,8 @@
   margin: 20px 0 10px 0;
 }
 
-.NavigationItems font {
+.NavigationItems font,
+.NavigationItems a {
   color: #40a4c8;
   text-decoration: none;
   font-weight: 600;
@@ -141,7 +142,8 @@
   .Categories {
     display: none;
   }
-  .NavigationItems font {
+  .NavigationItems font,
+  .NavigationItems a {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -155,8 +157,11 @@
   }
   .NavigationItems font:hover,
   .NavigationItems font:active,
-  .NavigationItems font.active {
-    color: #ff7e42;;
+  .NavigationItems font.active,
+  .NavigationItems a:hover,
+  .NavigationItems a:active,
+  .NavigationItems a.active {
+    color: #ff7e42;
   }
   .Button {
     margin: 0;

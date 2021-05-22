@@ -35,9 +35,12 @@
   .NavigationItem a {
     color: #132743;
     height: 100%;
-    font-weight: 600;
+    font-weight: 400;
+    font-size: 1.1rem;
+    display: flex;
+    /* font-weight: 600; */
     padding: 19px 10px;
-    border-bottom: 4px solid transparent;
+    /* border-bottom: 4px solid transparent; */
   }
 
   .NavigationItem a:hover,

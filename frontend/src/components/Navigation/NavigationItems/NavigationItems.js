@@ -2,40 +2,41 @@ import React from "react";
 import classes from "./NavigationItems.module.css";
 import NavigationItem from "./NavigationItem/NavigationItem";
 import { useModalContext } from "../../../contexts/ModalContext";
+import { useAuthContext } from "../../../contexts/AuthContext";
 
 const NavigationItems = () => {
   const { openModal, handleModalContent } = useModalContext();
+  const { setIsAuthenticated, isAuthenticated, setUserCity } = useAuthContext();
   return (
     <ul className={classes.NavigationItems}>
-      {/* <div className={classes.Categories}>
-        <NavigationItem link="/area-restrita/" exact>
-          <i className="fas fa-user-edit" />
-          Gerenciamento
-        </NavigationItem>
-        <div className={classes.HorizontalRule}></div>
-      </div> */}
-      <font
-        onClick={() => {
-          openModal();
-          handleModalContent("SignIn");
-        }}
-      >
-        <span>Gerenciamento</span>
-      </font>
-      <font
-        onClick={() => {
-          openModal();
-          handleModalContent("SignIn");
-        }}
-      >
-        <span>Entrar</span>
-        <i className="fas fa-sign-in-alt"></i>
-      </font>
-      <button className={classes.Button}>Anunciar</button>
-      {/* {props.isAuthenticated ? <NavigationItem link="/orders">Orders</NavigationItem> : null}
-        {!props.isAuthenticated
-            ? <NavigationItem link="/auth">Authenticate</NavigationItem>
-            : <NavigationItem link="/logout">Logout</NavigationItem>} */}
+      {!isAuthenticated ? (
+        <>
+          <font
+            onClick={() => {
+              openModal();
+              handleModalContent("SignIn");
+            }}
+          >
+            <span>Entrar</span>
+            <i className="fas fa-sign-in-alt"></i>
+          </font>
+        </>
+      ) : (
+        <>
+          <NavigationItem link="/gerenciamento">Gerenciamento</NavigationItem>
+          <font
+            onClick={() => {
+              setIsAuthenticated(false);
+              setUserCity(null);
+              alert("Você deslogou!");
+            }}
+          >
+            <span>Logout</span>
+            <i className="fas fa-sign-out-alt"></i>
+          </font>
+          <button className={classes.Button}>Anunciar</button>
+        </>
+      )}
     </ul>
   );
 };
