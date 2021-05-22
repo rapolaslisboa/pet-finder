@@ -1,0 +1,80 @@
+.SignUp {
+  padding: 28px;
+  margin: 1.5em auto;
+  max-width: 440px;
+}
+
+.SignUp h1 {
+  font-size: 1.3rem;
+  font-weight: 400;
+  text-align: center;
+  margin-top: 1em;
+  margin-bottom: 1.6em;
+}
+
+.Logo {
+  display: flex;
+  place-content: center;
+}
+
+.Logo img {
+  width: 65px;
+}
+
+.SignUp Button {
+  height: 60px;
+  margin-top: 30px;
+  background-color: #1976d2;
+}
+
+.SignUp Button > span:nth-child(1) {
+  font-size: 0.85rem;
+}
+
+.SignUp .Terms {
+  display: block;
+  margin-top: 30px;
+  text-align: center;
+  font-size: 0.8rem;
+}
+
+.FieldSet {
+  padding-left: 10px !important;
+  margin-top: 10px !important;
+}
+
+.Options {
+  flex-direction: row !important;
+}
+
+.Links {
+  margin-top: 20px;
+  display: flex;
+  justify-content: center;
+  text-align: center;
+}
+
+.Links a {
+  text-decoration: none;
+  color: #1976d2;
+  font-size: 0.9rem;
+}
+
+.Links a:hover,
+.Links a:active,
+.Links a.active {
+  color: #5a55c3;
+  outline: 0;
+}
+
+@media (min-width: 600px) {
+  .SignUp h1 {
+    font-size: 1.4rem;
+  }
+  .SignUp .Terms {
+    font-size: 0.85rem;
+  }
+  .SignUp Button > span:nth-child(1) {
+    font-size: 0.95rem;
+  }
+}

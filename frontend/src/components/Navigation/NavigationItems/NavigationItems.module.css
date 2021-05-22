@@ -1,0 +1,167 @@
+.NavigationItems {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-flow: column;
+  text-align: center;
+  /* align-items: center; */
+  height: 100%;
+}
+
+.Dropdown {
+  display: none;
+  float: left;
+  overflow: hidden;
+}
+
+.Dropdown .Dropbtn {
+  font-size: 1.1rem;
+  font-weight: 500;
+  border: none;
+  outline: none;
+  color: #132743;
+  padding: 14px 16px;
+  background-color: inherit;
+  font-family: inherit;
+  margin: 0;
+}
+
+.DropdownContent {
+  display: none;
+  position: absolute;
+  background-color: #f9f9f9;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+  z-index: 1;
+}
+
+.DropdownContent a {
+  float: none;
+  color: black !important;
+  padding: 12px 16px !important;
+  text-decoration: none !important;
+  display: block !important;
+  border: 0 !important;
+  font-size: 15px !important;
+  font-weight: inherit !important;
+  text-align: left;
+}
+
+.DropdownContent a:hover {
+  background-color: #ddd;
+}
+
+.Dropdown:hover .DropdownContent {
+  display: block;
+}
+
+.Categories {
+  display: block;
+  width: 100%;
+}
+
+.Categories p {
+  color: #474242;
+  font-size: 1.45rem;
+  text-align: left;
+  font-weight: 600;
+}
+
+.Categories i {
+  margin-right: 5px;
+  height: 25px;
+  width: 25px;
+}
+
+.HorizontalRule {
+  height: 1px;
+  overflow: hidden;
+  border-top: 1px solid rgb(210, 210, 210);
+  margin: 20px 0 10px 0;
+}
+
+.NavigationItems font {
+  color: #40a4c8;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 1.25rem;
+  width: 100%;
+  margin-top: 20px;
+  box-sizing: border-box;
+  text-align: left;
+  cursor: pointer;
+  display: block;
+}
+
+.NavigationItems font:hover,
+.NavigationItems font:active,
+.NavigationItems font.active {
+  color: #ffb26b;
+  outline: 0;
+}
+
+.NavigationItems font span {
+  margin-right: 5px;
+}
+
+.Button {
+  border: 0;
+  font-weight: 600;
+  border-radius: 30px;
+  letter-spacing: 1px;
+  padding: 7px 20px;
+  background-color: #fc9c6c;
+  color: #fff;
+  margin-top: 30px;
+  width: 220px;
+  height: 48px;
+  font-size: 1.25rem;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.Button:hover {
+  background-color: #ff7e42;
+}
+
+.Button:focus {
+  outline: 0;
+}
+
+@media (min-width: 500px) {
+  .NavigationItems {
+    flex-flow: row;
+    align-items: center;
+    gap: 2em;
+  }
+  .Dropdown {
+    display: block;
+  }
+  .Categories {
+    display: none;
+  }
+  .NavigationItems font {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #3d3c3b;
+    width: auto;
+    font-weight: 400;
+    font-size: 1.1rem;
+    height: 100%;
+    margin: 0;
+    padding: 0px 10px;
+  }
+  .NavigationItems font:hover,
+  .NavigationItems font:active,
+  .NavigationItems font.active {
+    color: #ff7e42;;
+  }
+  .Button {
+    margin: 0;
+    height: 38px;
+    width: 150px;
+    font-size: 1.1rem;
+  }
+}
