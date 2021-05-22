@@ -29,3 +29,6 @@
 /frontend/!.vscode/launch.json
 /frontend/!.vscode/extensions.json
 /frontend/*.code-workspace
+
+# backend
+/backend/__pycache__/*
