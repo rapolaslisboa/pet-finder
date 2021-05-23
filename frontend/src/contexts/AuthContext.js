@@ -5,6 +5,7 @@ const AuthContext = createContext({});
 const AuthProvider = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [userCity, setUserCity] = useState(null);
+  const [userEmail, setUserEmail] = useState(null);
 
   return (
     <AuthContext.Provider
@@ -13,6 +14,8 @@ const AuthProvider = ({ children }) => {
         setIsAuthenticated,
         userCity,
         setUserCity,
+        userEmail,
+        setUserEmail
       }}
     >
       {children}

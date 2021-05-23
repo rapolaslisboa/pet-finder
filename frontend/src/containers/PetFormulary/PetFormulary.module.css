@@ -1,10 +1,10 @@
-.SignUp {
+.PetFormulary {
   padding: 28px;
   margin: 1.5em auto;
   max-width: 440px;
 }
 
-.SignUp h1 {
+.PetFormulary h1 {
   font-size: 1.3rem;
   font-weight: 400;
   text-align: center;
@@ -12,21 +12,25 @@
   margin-bottom: 1.6em;
 }
 
-.SignUp Button {
+.PetFormulary Button {
   height: 60px;
   margin-top: 30px;
   background-color: #1976d2;
 }
 
-.SignUp Button > span:nth-child(1) {
+.PetFormulary Button > span:nth-child(1) {
   font-size: 0.85rem;
 }
 
-.SignUp .Terms {
+.PetFormulary .Terms {
   display: block;
   margin-top: 30px;
   text-align: center;
   font-size: 0.8rem;
+}
+
+.RadioGroup {
+  flex-direction: row !important;
 }
 
 .Links {
@@ -50,13 +54,13 @@
 }
 
 @media (min-width: 600px) {
-  .SignUp h1 {
+  .PetFormulary h1 {
     font-size: 1.4rem;
   }
-  .SignUp .Terms {
+  .PetFormulary .Terms {
     font-size: 0.85rem;
   }
-  .SignUp Button > span:nth-child(1) {
+  .PetFormulary Button > span:nth-child(1) {
     font-size: 0.95rem;
   }
 }

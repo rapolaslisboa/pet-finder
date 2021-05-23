@@ -6,7 +6,8 @@ import { useAuthContext } from "../../../contexts/AuthContext";
 
 const NavigationItems = () => {
   const { openModal, handleModalContent } = useModalContext();
-  const { setIsAuthenticated, isAuthenticated, setUserCity } = useAuthContext();
+  const { setIsAuthenticated, isAuthenticated, setUserCity, setUserEmail } =
+    useAuthContext();
   return (
     <ul className={classes.NavigationItems}>
       {!isAuthenticated ? (
@@ -28,13 +29,22 @@ const NavigationItems = () => {
             onClick={() => {
               setIsAuthenticated(false);
               setUserCity(null);
+              setUserEmail(null);
               alert("Você deslogou!");
             }}
           >
             <span>Logout</span>
             <i className="fas fa-sign-out-alt"></i>
           </font>
-          <button className={classes.Button}>Anunciar</button>
+          <button
+            className={classes.Button}
+            onClick={() => {
+              openModal();
+              handleModalContent("PetFormulary");
+            }}
+          >
+            Anunciar
+          </button>
         </>
       )}
     </ul>

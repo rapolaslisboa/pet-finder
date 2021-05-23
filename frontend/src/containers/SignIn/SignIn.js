@@ -11,7 +11,7 @@ import axios from "axios";
 
 const SignIn = () => {
   const { handleModalContent, closeModal } = useModalContext();
-  const { setIsAuthenticated, setUserCity } = useAuthContext();
+  const { setIsAuthenticated, setUserCity, setUserEmail } = useAuthContext();
   const { register, handleSubmit } = useForm();
 
   const onSubmit = (data) => {
@@ -25,6 +25,7 @@ const SignIn = () => {
           closeModal();
           alert("Login realizado com sucesso!");
           setUserCity(response.data.city);
+          setUserEmail(response.data.email);
           setIsAuthenticated(true);
         }
       })

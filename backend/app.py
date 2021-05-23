@@ -24,7 +24,6 @@ app.config['JWT_SECRET_KEY'] = 'F0662B2FC6209B419EA422056809F42D2A38CCFAD0105DF4
 jwt = JWTManager(app)
 
 
-
 # Login
 @app.route('/api/signin', methods=['POST'])
 def signin():
@@ -44,7 +43,8 @@ def signin():
             refresh_token = create_refresh_token(identity=data['E-mail'])
 
             return {
-                'e-mail': current_user["E-mail"],
+                'email': current_user["E-mail"],
+                # 'userID': current_user["_id"],
                 'city': current_user["Address"].split(", ")[2],
                 'accessToken': access_token,
                 'refreshToken': refresh_token
@@ -57,7 +57,7 @@ def signin():
         raise Exception("Usuário não pode logar.")
 
 
-# Cadastro
+# Cadastro de usário
 @app.route('/api/signup', methods=['POST'])
 def signup():
     try:
@@ -68,7 +68,8 @@ def signup():
             return {"error": "Esse e-mail já foi utilizado."}
 
         data["Password"] = hashlib.md5(data['Password'].encode()).hexdigest()
-        data["Address"] = data["Street"] + ", " + data["Number"] + ", " + data["City"] + ", " + data["State"]
+        data["Address"] = data["Street"] + ", " + data["Number"] + \
+            ", " + data["City"] + ", " + data["State"]
         del data["Street"]
         del data["Number"]
         del data["City"]
@@ -95,6 +96,68 @@ def list_pets(city=None):
         if db.pets.find({"City": city}).count() > 0:
             return json.dumps(filtered_pets, default=json_util.default)
         return {'error': 'Não há pets cadastrados nessa cidade.'}
+
+
+# Cadastro de pet
+@app.route('/api/register-pet', methods=['POST'])
+def register_pet():
+    try:
+        data = request.get_json()
+        user = db.user.find_one({"E-mail": data["E-mail"]})
+        data["Age"] = int(data["Age"])
+        data["Weight"] = float(data["Weight"])
+        data["Adopted"] = False
+        data["User ID"] = user["_id"]
+        del data["E-mail"]
+        db.pet.insert_one(data)
+        client.close()
+
+        return {"success": "Pet cadastrado com sucesso!"}
+
+    except:
+        raise Exception("Não é possível realizar o cadastro.")
+
+
+# Remoção de pet
+@app.route('/api/delete-pet', methods=['DELETE'])
+def delete_pet():
+    try:
+        data = request.get_json()
+        if db.pet.find({"_id": data["_id"]}).count() == 1:
+            db.find.delete_one({"_id": data["_id"]})
+        return {"success": "Pet deletado com sucesso!"}
+
+    except:
+        raise Exception("Não é realizar a deleção.")
+
+
+# Edição de pet
+@app.route('/api/update-pet', methods=['PUT'])
+def update_pet():
+    try:
+        data = request.get_json()
+        if db.pet.find({"_id": data["_id"]}).count() == 1:
+            db.pet.update_one({"_id": data["_id"]}, {"$set": {
+                "Name": data["Name"], "Type": data["Type"], "Breed": data["Breed"],
+                "Age": data["Age"], "Weight": data["Weight"], "City": data["City"]}}, upsert=False)
+        return {"success": "Pet atualizado com sucesso!"}
+
+    except:
+        raise Exception("Não é realizar a edição.")
+
+
+# Adoção de pet - não implementado pois a ideia é a pessoa interessada entrar em contato com o anunciante através de e-mail
+@app.route('/api/adopt-pet', methods=['PUT'])
+def adopt_pet():
+    try:
+        data = request.get_json()
+        if db.pet.find({"_id": data["_id"]}).count() == 1:
+            db.pet.update_one({"_id": data["_id"]}, {
+                              "$set": {"Adopted": True}}, upsert=False)
+        return {"success": "Pet adotado com sucesso!"}
+
+    except:
+        raise Exception("Não é realizar a adoção.")
 
 
 if __name__ == "__main__":

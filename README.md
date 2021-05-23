@@ -3,6 +3,12 @@
 * Flask
 * MongoDB
 
+**Requisitos** para rodar a aplicação:
+* Python
+* Flask
+* MongoDB
+* Node.js
+
 Para rodar a **interface de usuário**: 
 
 ```cd frontend```
