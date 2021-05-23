@@ -4,10 +4,37 @@
   flex-direction: column;
 }
 
-.Management font {
-  font-size: 2em;
-  font-weight: 600;
+.Management font:nth-child(1),
+.Management p {
   text-align: center;
   color: #3d3c3b;
+}
+
+.Management font:nth-child(1) {
+  font-size: 2em;
+  font-weight: 600;
   margin-top: 3em;
 }
+
+.Management p {
+  font-size: 1.3em;
+  font-weight: 300;
+  margin-top: 1em;
+}
+
+.PetList {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  flex-wrap: wrap;
+  gap: 60px;
+  margin-top: 4em;
+}
+
+@media (min-width: 500px) {
+  .PetList {
+    flex-direction: row;
+  }
+}
+

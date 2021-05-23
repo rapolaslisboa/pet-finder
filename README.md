@@ -1,3 +1,7 @@
+# Pet Finder #
+
+O Pet Finder é uma aplicação para pets abandonados encontrarem um novo lar.
+
 **Stack**:
 * React
 * Flask

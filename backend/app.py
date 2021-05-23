@@ -2,7 +2,7 @@ import datetime
 import hashlib
 import json
 
-from bson import json_util
+from bson import (json_util, ObjectId)
 from flask import Flask, request
 from flask_cors import CORS
 from flask_jwt_extended import (
@@ -44,7 +44,6 @@ def signin():
 
             return {
                 'email': current_user["E-mail"],
-                # 'userID': current_user["_id"],
                 'city': current_user["Address"].split(", ")[2],
                 'accessToken': access_token,
                 'refreshToken': refresh_token
@@ -84,19 +83,35 @@ def signup():
         raise Exception("Não é possível realizar o cadastro.")
 
 
-# Retorna os pets de acordo com a cidade
+# Retorna os pets de acordo com a cidade ou de acordo com o usuário (anunciante)
 @app.route('/api/list-pets', methods=['GET'])
+@app.route('/api/list-pets-user/<user_email>', methods=['GET'])
 @app.route('/api/list-pets/<city>', methods=['GET'])
-def list_pets(city=None):
-    if city == None:
-        filtered_pets = db.pets.find({})
-        return json.dumps(filtered_pets, default=json_util.default)
-    else:
-        filtered_pets = db.pets.find({"City": city})
-        if db.pets.find({"City": city}).count() > 0:
+def list_pets(user_email=None, city=None):
+    if user_email == None:
+        if city == None:
+            filtered_pets = list(db.pet.find({}))
+            add_user_contact(filtered_pets)
             return json.dumps(filtered_pets, default=json_util.default)
-        return {'error': 'Não há pets cadastrados nessa cidade.'}
+        else:
+            filtered_pets = list(db.pet.find({"City": city}))
+            add_user_contact(filtered_pets)      
+            if len(filtered_pets) > 0:
+                return json.dumps(filtered_pets, default=json_util.default)
+            return {'error': 'Não há pets cadastrados nessa cidade.'}
+    else:
+        filtered_user = db.user.find_one({"E-mail": user_email})
+        filtered_pets = list(db.pet.find({"User ID": filtered_user["_id"]}))
+        if len(filtered_pets) > 0:
+                return json.dumps(filtered_pets, default=json_util.default)
+        return {'error': 'Você ainda não cadastrou um pet.'}
 
+
+# Por meio do atrelamento Usuário - Pet, filtro o contato (e-mail) do usuário
+def add_user_contact(filtered_pets):
+    for pet in filtered_pets:
+        pet_announcer = db.user.find_one({"_id": pet["User ID"]})
+        pet["Contact"] = pet_announcer["E-mail"]
 
 # Cadastro de pet
 @app.route('/api/register-pet', methods=['POST'])
@@ -119,12 +134,15 @@ def register_pet():
 
 
 # Remoção de pet
-@app.route('/api/delete-pet', methods=['DELETE'])
-def delete_pet():
-    try:
-        data = request.get_json()
-        if db.pet.find({"_id": data["_id"]}).count() == 1:
-            db.find.delete_one({"_id": data["_id"]})
+@app.route('/api/delete-pet/<pet_id>', methods=['DELETE'])
+def delete_pet(pet_id):
+    try:        
+        print("pet_id antes: ", pet_id)
+        pet_id = ObjectId(pet_id)
+        print("pet_id depois: ", pet_id)
+        if db.pet.find({"_id": pet_id}).count() == 1:
+            print("entrouuuuu")
+            db.pet.delete_one({"_id": pet_id})
         return {"success": "Pet deletado com sucesso!"}
 
     except:
@@ -139,7 +157,7 @@ def update_pet():
         if db.pet.find({"_id": data["_id"]}).count() == 1:
             db.pet.update_one({"_id": data["_id"]}, {"$set": {
                 "Name": data["Name"], "Type": data["Type"], "Breed": data["Breed"],
-                "Age": data["Age"], "Weight": data["Weight"], "City": data["City"]}}, upsert=False)
+                "Age": int(data["Age"]), "Weight": float(data["Weight"]), "City": data["City"]}}, upsert=False)
         return {"success": "Pet atualizado com sucesso!"}
 
     except:

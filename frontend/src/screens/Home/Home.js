@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import classes from "./Home.module.css";
 import samples from "../../helpers/PetsData";
 import Card from "../../components/Card/Card";
+import axios from "axios";
 import { useAuthContext } from "../../contexts/AuthContext";
 
 const Home = () => {
@@ -9,13 +10,20 @@ const Home = () => {
   const [filtered, setFiltered] = useState([]);
 
   useEffect(() => {
-    if (userCity === null) {
-      setFiltered(samples);
-      // setFiltered([]);
-    } else {
-      setFiltered(samples.filter((element) => element.City === userCity));
-      // setFiltered([]);
-    }
+    let routeURL =
+      userCity === null
+        ? "http://127.0.0.1:5000/api/list-pets"
+        : `http://127.0.0.1:5000/api/list-pets/${userCity}`;
+    axios
+      .get(routeURL)
+      .then((response) => {
+        if ("error" in response.data) {
+          alert(response.data.error);
+        } else {
+          setFiltered(response.data);
+        }
+      })
+      .catch((error) => alert(error));
   }, [userCity]);
 
   return (
@@ -29,10 +37,7 @@ const Home = () => {
       <div className={classes.PetList}>
         {filtered.length > 0 ? (
           filtered.map(
-            (element) =>
-              !element.Adopted && (
-                <Card key={element["Pet ID"]} element={element} />
-              )
+            (pet, index) => !pet.Adopted && <Card key={index} pet={pet} />
           )
         ) : userCity === null ? (
           <p>Ainda não há pets anunciados...</p>
@@ -42,12 +47,6 @@ const Home = () => {
             <strong>{userCity}</strong>...
           </p>
         )}
-        {/* {filtered.map(
-          (element) =>
-            !element.Adopted && (
-              <Card key={element["Pet ID"]} element={element} />
-            )
-        )} */}
       </div>
     </div>
   );
