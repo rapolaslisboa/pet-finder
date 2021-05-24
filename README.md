@@ -17,7 +17,7 @@ Para rodar a **interface de usuário**:
 
 ```cd frontend```
 ```npm install```
-```npm run```
+```npm start```
 
 Para rodar a **API**:
 
