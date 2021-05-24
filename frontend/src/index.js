@@ -1,18 +1,21 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import { BrowserRouter } from "react-router-dom";
-import { ModalProvider } from "./contexts/ModalContext";
-import { AuthProvider } from "./contexts/AuthContext";
 import App from "./App";
+import { AuthProvider } from "./contexts/AuthContext";
+import { ModalProvider } from "./contexts/ModalContext";
+import { PetProvider } from "./contexts/PetContext";
 import "./index.css";
 
 ReactDOM.render(
   <BrowserRouter>
-    <AuthProvider>
-      <ModalProvider>
-        <App />
-      </ModalProvider>
-    </AuthProvider>
+    <PetProvider>
+      <AuthProvider>
+        <ModalProvider>
+          <App />
+        </ModalProvider>
+      </AuthProvider>
+    </PetProvider>
   </BrowserRouter>,
   document.getElementById("root")
 );

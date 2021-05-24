@@ -1,18 +1,17 @@
 import Button from "@material-ui/core/Button";
 import Grid from "@material-ui/core/Grid";
 import TextField from "@material-ui/core/TextField";
+import axios from "axios";
 import React from "react";
+import { useForm } from "react-hook-form";
 import { useModalContext } from "../../contexts/ModalContext";
 import classes from "./SignUp.module.css";
-import { useForm } from "react-hook-form";
-import axios from "axios";
 
 const SignUp = () => {
   const { handleModalContent, closeModal } = useModalContext();
   const { register, handleSubmit, reset } = useForm();
-  
+
   const onSubmit = (data) => {
-    console.log(data);
     axios
       .post("http://127.0.0.1:5000/api/signup", data)
       .then((response) => {

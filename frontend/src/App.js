@@ -5,6 +5,7 @@ import { useAuthContext } from "./contexts/AuthContext";
 import Layout from "./hoc/Layout/Layout";
 import Home from "./screens/Home/Home";
 import Management from "./screens/Management/Management";
+import Edition from "./screens/Edition/Edition";
 
 const App = () => {
   const { isAuthenticated } = useAuthContext();
@@ -20,6 +21,7 @@ const App = () => {
       <Switch>
         <Route path="/" exact component={Home} />
         <Route path="/gerenciamento" component={Management} />
+        <Route path="/edition" component={Edition} />
         <Redirect to="/" />
       </Switch>
     );

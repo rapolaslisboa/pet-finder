@@ -2,28 +2,28 @@ import Button from "@material-ui/core/Button";
 import Checkbox from "@material-ui/core/Checkbox";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import TextField from "@material-ui/core/TextField";
-import React from "react";
-import { useModalContext } from "../../contexts/ModalContext";
-import { useAuthContext } from "../../contexts/AuthContext";
-import classes from "./SignIn.module.css";
-import { useForm } from "react-hook-form";
 import axios from "axios";
+import React from "react";
+import { useForm } from "react-hook-form";
+import { useAuthContext } from "../../contexts/AuthContext";
+import { useModalContext } from "../../contexts/ModalContext";
+import classes from "./SignIn.module.css";
 
 const SignIn = () => {
   const { handleModalContent, closeModal } = useModalContext();
   const { setIsAuthenticated, setUserCity, setUserEmail } = useAuthContext();
-  const { register, handleSubmit } = useForm();
+  const { register, handleSubmit, reset } = useForm();
 
   const onSubmit = (data) => {
     axios
       .post("http://127.0.0.1:5000/api/signin", data)
       .then((response) => {
-        console.log(response.data);
         if ("error" in response.data) {
           alert(response.data.error);
         } else {
           closeModal();
           alert("Login realizado com sucesso!");
+          reset();
           setUserCity(response.data.city);
           setUserEmail(response.data.email);
           setIsAuthenticated(true);
@@ -31,6 +31,8 @@ const SignIn = () => {
       })
       .catch((error) => alert(error));
   };
+
+  console.log("SignIn");
 
   return (
     <div className={classes.SignIn}>

@@ -1,13 +1,15 @@
+import axios from "axios";
 import React from "react";
+import { Link } from "react-router-dom";
 import CatImg from "../../assets/images/cat.jpg";
 import DogImg from "../../assets/images/dog.jpg";
-import { useModalContext } from "../../contexts/ModalContext";
-import axios from "axios";
+import { usePetContext } from "../../contexts/PetContext";
 import classes from "./Card.module.css";
 
 const Card = (props) => {
-  const { openModal, handleModalContent } = useModalContext();
-  const { pet, management, filtered, setFiltered } = props;
+  const { setSelectedPet, filtered, setFiltered, setIsEditable } =
+    usePetContext();
+  const { pet, management } = props;
 
   const deletePet = (petID) => {
     axios
@@ -16,8 +18,8 @@ const Card = (props) => {
         if ("error" in response.data) {
           alert(response.data.error);
         } else {
-          let updated = [...filtered]
-          updated = updated.filter(pet => pet["_id"][["$oid"]] !== petID);
+          let updated = [...filtered];
+          updated = updated.filter((pet) => pet["_id"]["$oid"] !== petID);
           setFiltered(updated);
           alert(response.data.success);
         }
@@ -41,15 +43,17 @@ const Card = (props) => {
       <div>
         {management ? (
           <>
-            <button
-              className={[classes.Button, classes.EditButton].join(" ")}
-              onClick={() => {
-                openModal();
-                handleModalContent("PetFormulary");
-              }}
-            >
-              Editar
-            </button>
+            <Link to="/edition">
+              <button
+                className={[classes.Button, classes.EditButton].join(" ")}
+                onClick={() => {
+                  setIsEditable(true);
+                  setSelectedPet(pet);
+                }}
+              >
+                Editar
+              </button>
+            </Link>
             <button
               className={[classes.Button, classes.DeleteButton].join(" ")}
               onClick={() => deletePet(pet["_id"]["$oid"])}

@@ -1,19 +1,27 @@
 import React from "react";
-import classes from "./Modal.module.css";
+import { useModalContext } from "../../../contexts/ModalContext";
+import { usePetContext } from "../../../contexts/PetContext";
 import Auxiliary from "../../../hoc/Auxiliary/Auxiliary";
 import Backdrop from "../Backdrop/Backdrop";
-import { useModalContext } from "../../../contexts/ModalContext";
+import classes from "./Modal.module.css";
 
 const Modal = (props) => {
+  const { visible, closeModal } = useModalContext();
+  const { setIsEditable } = usePetContext();
+
   let attachedClasses = [classes.Modal];
   if (props.type !== undefined) {
     attachedClasses = [classes.Modal, classes[props.type]];
   }
 
-  const { visible, closeModal } = useModalContext();
+  const handleCloseModal = () => {
+    setIsEditable(false);
+    closeModal();
+  };
+
   return (
     <Auxiliary>
-      <Backdrop visible={visible} clicked={closeModal} />
+      <Backdrop visible={visible} clicked={handleCloseModal} />
       <div
         className={attachedClasses.join(" ")}
         style={{
@@ -21,7 +29,7 @@ const Modal = (props) => {
           visibility: visible ? "visible" : "hidden",
         }}
       >
-        <div className={classes.Close} onClick={closeModal}>
+        <div className={classes.Close} onClick={handleCloseModal}>
           <i className="fas fa-times"></i>
         </div>
         {props.children}

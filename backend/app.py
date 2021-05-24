@@ -56,7 +56,7 @@ def signin():
         raise Exception("Usuário não pode logar.")
 
 
-# Cadastro de usário
+# Cadastro de usuário
 @app.route('/api/signup', methods=['POST'])
 def signup():
     try:
@@ -95,7 +95,7 @@ def list_pets(user_email=None, city=None):
             return json.dumps(filtered_pets, default=json_util.default)
         else:
             filtered_pets = list(db.pet.find({"City": city}))
-            add_user_contact(filtered_pets)      
+            add_user_contact(filtered_pets)
             if len(filtered_pets) > 0:
                 return json.dumps(filtered_pets, default=json_util.default)
             return {'error': 'Não há pets cadastrados nessa cidade.'}
@@ -103,7 +103,7 @@ def list_pets(user_email=None, city=None):
         filtered_user = db.user.find_one({"E-mail": user_email})
         filtered_pets = list(db.pet.find({"User ID": filtered_user["_id"]}))
         if len(filtered_pets) > 0:
-                return json.dumps(filtered_pets, default=json_util.default)
+            return json.dumps(filtered_pets, default=json_util.default)
         return {'error': 'Você ainda não cadastrou um pet.'}
 
 
@@ -114,6 +114,8 @@ def add_user_contact(filtered_pets):
         pet["Contact"] = pet_announcer["E-mail"]
 
 # Cadastro de pet
+
+
 @app.route('/api/register-pet', methods=['POST'])
 def register_pet():
     try:
@@ -136,12 +138,9 @@ def register_pet():
 # Remoção de pet
 @app.route('/api/delete-pet/<pet_id>', methods=['DELETE'])
 def delete_pet(pet_id):
-    try:        
-        print("pet_id antes: ", pet_id)
+    try:
         pet_id = ObjectId(pet_id)
-        print("pet_id depois: ", pet_id)
         if db.pet.find({"_id": pet_id}).count() == 1:
-            print("entrouuuuu")
             db.pet.delete_one({"_id": pet_id})
         return {"success": "Pet deletado com sucesso!"}
 
@@ -154,9 +153,10 @@ def delete_pet(pet_id):
 def update_pet():
     try:
         data = request.get_json()
-        if db.pet.find({"_id": data["_id"]}).count() == 1:
-            db.pet.update_one({"_id": data["_id"]}, {"$set": {
-                "Name": data["Name"], "Type": data["Type"], "Breed": data["Breed"],
+        pet_id = ObjectId(data["_id"])
+        if db.pet.find({"_id": pet_id}).count() == 1:
+            db.pet.update_one({"_id": pet_id}, {"$set": {
+                "Name": data["Name"], "Breed": data["Breed"],
                 "Age": int(data["Age"]), "Weight": float(data["Weight"]), "City": data["City"]}}, upsert=False)
         return {"success": "Pet atualizado com sucesso!"}
 
@@ -169,8 +169,9 @@ def update_pet():
 def adopt_pet():
     try:
         data = request.get_json()
-        if db.pet.find({"_id": data["_id"]}).count() == 1:
-            db.pet.update_one({"_id": data["_id"]}, {
+        pet_id = ObjectId(data["_id"])
+        if db.pet.find({"_id": pet_id}).count() == 1:
+            db.pet.update_one({"_id": pet_id}, {
                               "$set": {"Adopted": True}}, upsert=False)
         return {"success": "Pet adotado com sucesso!"}
 

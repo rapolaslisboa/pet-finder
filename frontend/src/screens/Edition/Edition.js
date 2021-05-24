@@ -1,33 +1,37 @@
 import Button from "@material-ui/core/Button";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
-import FormLabel from "@material-ui/core/FormLabel";
 import Grid from "@material-ui/core/Grid";
-import Radio from "@material-ui/core/Radio";
-import RadioGroup from "@material-ui/core/RadioGroup";
 import TextField from "@material-ui/core/TextField";
 import axios from "axios";
-import React from "react";
+import React, { useState } from "react";
 import { useForm } from "react-hook-form";
-import { useAuthContext } from "../../contexts/AuthContext";
-import { useModalContext } from "../../contexts/ModalContext";
+import { Redirect } from "react-router-dom";
 import { usePetContext } from "../../contexts/PetContext";
-import classes from "./PetFormulary.module.css";
+import classes from "./Edition.module.css";
 
-const PetFormulary = () => {
-  const { closeModal } = useModalContext();
-  const { userEmail } = useAuthContext();
-  const { setUpdateCards, updateCards } = usePetContext();
-  const { register, handleSubmit, reset } = useForm();
+const Edition = () => {
+  const { selectedPet, setSelectedPet, isEditable, setIsEditable } =
+    usePetContext();
+  const { register, handleSubmit } = useForm();
+  const [redirect, setRedirect] = useState(false);
+
+  if (redirect) {
+    return <Redirect to="/gerenciamento" />;
+  }
 
   const onSubmit = (data) => {
-    data["E-mail"] = userEmail;
+    data["_id"] = selectedPet["_id"]["$oid"];
+    data["Name"] = document.getElementById("name").value;
+    data["Breed"] = document.getElementById("breed").value;
+    data["Age"] = document.getElementById("age").value;
+    data["Weight"] = document.getElementById("weight").value;
+    data["City"] = document.getElementById("city").value;
     axios
-      .post("http://127.0.0.1:5000/api/register-pet", data)
+      .put("http://127.0.0.1:5000/api/update-pet", data)
       .then((response) => {
         if ("success" in response.data) {
-          closeModal();
-          reset();
-          setUpdateCards(!updateCards);
+          setSelectedPet({});
+          setIsEditable(false);
+          setRedirect(true);
           alert(response.data.success);
         } else {
           alert(response.data.error);
@@ -37,8 +41,8 @@ const PetFormulary = () => {
   };
 
   return (
-    <div className={classes.PetFormulary}>
-      <h1>Cadastre um pet</h1>
+    <div className={classes.Edition}>
+      <h1>Atualize o seu pet</h1>
       <form className={classes.Form} onSubmit={handleSubmit(onSubmit)}>
         <Grid container spacing={2}>
           <Grid item xs={12}>
@@ -46,6 +50,7 @@ const PetFormulary = () => {
               autoComplete="fname"
               name="Name"
               variant="outlined"
+              defaultValue={isEditable ? selectedPet["Name"] : ""}
               required
               fullWidth
               {...register("Name")}
@@ -55,28 +60,11 @@ const PetFormulary = () => {
             />
           </Grid>
           <Grid item xs={12}>
-            <FormLabel component="legend">
-              O pet é um cachorro ou um gato?
-            </FormLabel>
-            <RadioGroup
-              aria-label="pet-type"
-              name="pet-type1"
-              {...register("Type")}
-              className={classes.RadioGroup}
-            >
-              <FormControlLabel
-                value="Cachorro"
-                control={<Radio />}
-                label="Cachorro"
-              />
-              <FormControlLabel value="Gato" control={<Radio />} label="Gato" />
-            </RadioGroup>
-          </Grid>
-          <Grid item xs={12}>
             <TextField
               variant="outlined"
               required
               fullWidth
+              defaultValue={isEditable ? selectedPet["Breed"] : ""}
               name="Breed"
               label="Raça"
               {...register("Breed")}
@@ -88,6 +76,7 @@ const PetFormulary = () => {
               variant="outlined"
               required
               fullWidth
+              defaultValue={isEditable ? selectedPet["Age"] : ""}
               type="number"
               InputProps={{ inputProps: { min: 0 } }}
               id="age"
@@ -101,6 +90,7 @@ const PetFormulary = () => {
               variant="outlined"
               required
               fullWidth
+              defaultValue={isEditable ? selectedPet["Weight"] : ""}
               InputProps={{ inputProps: { min: 0 } }}
               type="number"
               {...register("Weight")}
@@ -113,6 +103,7 @@ const PetFormulary = () => {
             <TextField
               variant="outlined"
               required
+              defaultValue={isEditable ? selectedPet["City"] : ""}
               fullWidth
               id="city"
               {...register("City")}
@@ -121,10 +112,6 @@ const PetFormulary = () => {
             />
           </Grid>
         </Grid>
-        <span className={classes.Terms}>
-          Ao cadastrar um pet, você concorda com a Política dos Pets e os Termos
-          de Uso do Pet Finder.
-        </span>
         <Button
           type="submit"
           fullWidth
@@ -132,11 +119,11 @@ const PetFormulary = () => {
           color="primary"
           className={classes.Button}
         >
-          Cadastrar
+          Atualizar
         </Button>
       </form>
     </div>
   );
 };
 
-export default PetFormulary;
+export default Edition;

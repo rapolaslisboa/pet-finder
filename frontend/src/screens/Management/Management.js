@@ -1,12 +1,13 @@
 import axios from "axios";
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import Card from "../../components/Card/Card";
 import { useAuthContext } from "../../contexts/AuthContext";
+import { usePetContext } from "../../contexts/PetContext";
 import classes from "./Management.module.css";
 
 const Management = () => {
   const { userEmail } = useAuthContext();
-  const [filtered, setFiltered] = useState([]);
+  const { filtered, setFiltered, updateCards } = usePetContext();
 
   useEffect(() => {
     axios
@@ -19,7 +20,7 @@ const Management = () => {
         }
       })
       .catch((error) => alert(error));
-  }, []);
+  }, [updateCards]);
 
   return (
     <div className={classes.Management}>
@@ -28,15 +29,7 @@ const Management = () => {
         {filtered.length > 0 ? (
           filtered.map(
             (pet, index) =>
-              !pet.Adopted && (
-                <Card
-                  key={index}
-                  filtered={filtered}
-                  setFiltered={setFiltered}
-                  management={true}
-                  pet={pet}
-                />
-              )
+              !pet.Adopted && <Card key={index} management={true} pet={pet} />
           )
         ) : (
           <p>

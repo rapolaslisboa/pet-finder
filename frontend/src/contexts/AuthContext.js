@@ -15,7 +15,7 @@ const AuthProvider = ({ children }) => {
         userCity,
         setUserCity,
         userEmail,
-        setUserEmail
+        setUserEmail,
       }}
     >
       {children}

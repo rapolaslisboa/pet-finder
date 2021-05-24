@@ -44,3 +44,4 @@ const useModalContext = () => {
 };
 
 export { useModalContext, ModalProvider };
+

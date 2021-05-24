@@ -1,13 +1,13 @@
-import React, { useState, useEffect } from "react";
-import classes from "./Home.module.css";
-import samples from "../../helpers/PetsData";
-import Card from "../../components/Card/Card";
 import axios from "axios";
+import React, { useEffect } from "react";
+import Card from "../../components/Card/Card";
 import { useAuthContext } from "../../contexts/AuthContext";
+import { usePetContext } from "../../contexts/PetContext";
+import classes from "./Home.module.css";
 
 const Home = () => {
   const { userCity } = useAuthContext();
-  const [filtered, setFiltered] = useState([]);
+  const { filtered, setFiltered, updateCards } = usePetContext();
 
   useEffect(() => {
     let routeURL =
@@ -18,13 +18,13 @@ const Home = () => {
       .get(routeURL)
       .then((response) => {
         if ("error" in response.data) {
-          alert(response.data.error);
+          setFiltered([]);
         } else {
           setFiltered(response.data);
         }
       })
       .catch((error) => alert(error));
-  }, [userCity]);
+  }, [updateCards, userCity]);
 
   return (
     <div className={classes.Home}>

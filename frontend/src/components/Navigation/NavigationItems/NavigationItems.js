@@ -1,8 +1,8 @@
 import React from "react";
-import classes from "./NavigationItems.module.css";
-import NavigationItem from "./NavigationItem/NavigationItem";
-import { useModalContext } from "../../../contexts/ModalContext";
 import { useAuthContext } from "../../../contexts/AuthContext";
+import { useModalContext } from "../../../contexts/ModalContext";
+import NavigationItem from "./NavigationItem/NavigationItem";
+import classes from "./NavigationItems.module.css";
 
 const NavigationItems = () => {
   const { openModal, handleModalContent } = useModalContext();

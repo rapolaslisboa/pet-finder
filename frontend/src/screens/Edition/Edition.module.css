@@ -1,0 +1,46 @@
+.Edition {
+  padding: 28px;
+  margin: 1.5em auto;
+  max-width: 440px;
+}
+
+.Edition h1 {
+  font-size: 1.3rem;
+  font-weight: 400;
+  text-align: center;
+  margin-top: 1em;
+  margin-bottom: 1.6em;
+}
+
+.Edition Button {
+  height: 60px;
+  margin-top: 30px;
+  background-color: #1976d2;
+}
+
+.Edition Button > span:nth-child(1) {
+  font-size: 0.85rem;
+}
+
+.Edition .Terms {
+  display: block;
+  margin-top: 30px;
+  text-align: center;
+  font-size: 0.8rem;
+}
+
+.RadioGroup {
+  flex-direction: row !important;
+}
+
+@media (min-width: 600px) {
+  .Edition h1 {
+    font-size: 1.4rem;
+  }
+  .Edition .Terms {
+    font-size: 0.85rem;
+  }
+  .Edition Button > span:nth-child(1) {
+    font-size: 0.95rem;
+  }
+}
