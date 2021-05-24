@@ -32,8 +32,6 @@ const SignIn = () => {
       .catch((error) => alert(error));
   };
 
-  console.log("SignIn");
-
   return (
     <div className={classes.SignIn}>
       <h1>Faça seu login</h1>

@@ -41,7 +41,7 @@ A coleção User possui a seguinte estrutura:
 
 * _id
 * Name (nome)
-* Type (tipo - chachorro ou gato)
+* Type (tipo - Cachorro ou Gato)
 * Breed (raça)
 * Age (idade)
 * Weight (peso - em kg)
