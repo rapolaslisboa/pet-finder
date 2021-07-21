@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios from "../../API";
 import React from "react";
 import { Link } from "react-router-dom";
 import CatImg from "../../assets/images/cat.jpg";
@@ -13,7 +13,7 @@ const Card = (props) => {
 
   const deletePet = (petID) => {
     axios
-      .delete(`http://127.0.0.1:5000/api/delete-pet/${petID}`)
+      .delete(`/delete-pet/${petID}`)
       .then((response) => {
         if ("error" in response.data) {
           alert(response.data.error);

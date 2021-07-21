@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios from "../../API";
 import React, { useEffect } from "react";
 import Card from "../../components/Card/Card";
 import { useAuthContext } from "../../contexts/AuthContext";
@@ -12,8 +12,8 @@ const Home = () => {
   useEffect(() => {
     let routeURL =
       userCity === null
-        ? "http://127.0.0.1:5000/api/list-pets"
-        : `http://127.0.0.1:5000/api/list-pets/${userCity}`;
+        ? "/list-pets"
+        : `/list-pets/${userCity}`;
     axios
       .get(routeURL)
       .then((response) => {

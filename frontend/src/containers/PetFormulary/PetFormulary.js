@@ -5,7 +5,7 @@ import Grid from "@material-ui/core/Grid";
 import Radio from "@material-ui/core/Radio";
 import RadioGroup from "@material-ui/core/RadioGroup";
 import TextField from "@material-ui/core/TextField";
-import axios from "axios";
+import axios from "../../API";
 import React from "react";
 import { useForm } from "react-hook-form";
 import { useAuthContext } from "../../contexts/AuthContext";
@@ -22,7 +22,7 @@ const PetFormulary = () => {
   const onSubmit = (data) => {
     data["E-mail"] = userEmail;
     axios
-      .post("http://127.0.0.1:5000/api/register-pet", data)
+      .post("/register-pet", data)
       .then((response) => {
         if ("success" in response.data) {
           closeModal();

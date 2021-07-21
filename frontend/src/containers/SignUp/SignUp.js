@@ -1,7 +1,7 @@
 import Button from "@material-ui/core/Button";
 import Grid from "@material-ui/core/Grid";
 import TextField from "@material-ui/core/TextField";
-import axios from "axios";
+import axios from "../../API";
 import React from "react";
 import { useForm } from "react-hook-form";
 import { useModalContext } from "../../contexts/ModalContext";
@@ -13,7 +13,7 @@ const SignUp = () => {
 
   const onSubmit = (data) => {
     axios
-      .post("http://127.0.0.1:5000/api/signup", data)
+      .post("/signup", data)
       .then((response) => {
         if ("success" in response.data) {
           closeModal();

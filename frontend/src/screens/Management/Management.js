@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios from "../../API";
 import React, { useEffect } from "react";
 import Card from "../../components/Card/Card";
 import { useAuthContext } from "../../contexts/AuthContext";
@@ -11,7 +11,7 @@ const Management = () => {
 
   useEffect(() => {
     axios
-      .get(`http://127.0.0.1:5000/api/list-pets-user/${userEmail}`)
+      .get(`/list-pets-user/${userEmail}`)
       .then((response) => {
         if ("error" in response.data) {
           setFiltered([]);

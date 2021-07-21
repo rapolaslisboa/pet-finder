@@ -1,7 +1,7 @@
 import Button from "@material-ui/core/Button";
 import Grid from "@material-ui/core/Grid";
 import TextField from "@material-ui/core/TextField";
-import axios from "axios";
+import axios from "../../API";
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { Redirect } from "react-router-dom";
@@ -26,7 +26,7 @@ const Edition = () => {
     data["Weight"] = document.getElementById("weight").value;
     data["City"] = document.getElementById("city").value;
     axios
-      .put("http://127.0.0.1:5000/api/update-pet", data)
+      .put("/update-pet", data)
       .then((response) => {
         if ("success" in response.data) {
           setSelectedPet({});
